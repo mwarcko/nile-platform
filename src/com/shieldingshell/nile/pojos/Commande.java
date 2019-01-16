@@ -5,6 +5,10 @@ import java.util.List;
 public class Commande {
 	private List<Carton> cartons;
 
+	public Commande() {
+		
+	}
+	
 	public Commande(List<Carton> cartons) {
 		super();
 		this.cartons = cartons;
