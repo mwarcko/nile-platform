@@ -3,7 +3,7 @@ package com.shieldingshell.nile.pojos;
 import java.util.List;
 
 public class Commande {
-	List<Carton> cartons;
+	private List<Carton> cartons;
 
 	public Commande(List<Carton> cartons) {
 		super();
