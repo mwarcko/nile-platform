@@ -1,55 +1,44 @@
 package com.shieldingshell.nile.pojos;
 
-public class Camion {
-	private Long largeurCamion;
-	private Long longueurCamion;
-	private int hauteurCamion;
-	private String typeCamion;
-
-	public Camion(Long largeurCamion, Long longueurCamion, int hauteurCamion, String typeCamion) {
-		super();
-		this.largeurCamion = largeurCamion;
-		this.longueurCamion = longueurCamion;
-		this.hauteurCamion = hauteurCamion;
-		this.typeCamion = typeCamion;
+public enum Camion {
+	
+	TYPE_S(250L,180L,1),
+	TYPE_M(350L,200L,2),
+	TYPE_L(400L,220L,3),
+	TYPE_XL(550L,230L,4);
+	
+	private Long longueur;
+	private Long largeur;
+	private int hauteur;
+	
+	private Camion(Long longueur, Long largeur, int hauteur) {
+		this.longueur = longueur;
+		this.largeur = largeur;
+		this.hauteur = hauteur;
 	}
 
-	public final Long getLargeurCamion() {
-		return largeurCamion;
+	public final Long getLongueur() {
+		return longueur;
 	}
 
-	public final void setLargeurCamion(Long largeurCamion) {
-		this.largeurCamion = largeurCamion;
+	public final void setLongueur(Long longueur) {
+		this.longueur = longueur;
 	}
 
-	public final Long getLongueurCamion() {
-		return longueurCamion;
+	public final Long getLargeur() {
+		return largeur;
 	}
 
-	public final void setLongueurCamion(Long longueurCamion) {
-		this.longueurCamion = longueurCamion;
+	public final void setLargeur(Long largeur) {
+		this.largeur = largeur;
 	}
 
-	public final int getHauteurCamion() {
-		return hauteurCamion;
+	public final int getHauteur() {
+		return hauteur;
 	}
 
-	public final void setHauteurCamion(int hauteurCamion) {
-		this.hauteurCamion = hauteurCamion;
-	}
-
-	public final String getTypeCamion() {
-		return typeCamion;
-	}
-
-	public final void setTypeCamion(String typeCamion) {
-		this.typeCamion = typeCamion;
-	}
-
-	@Override
-	public String toString() {
-		return "Camion [largeurCamion=" + largeurCamion + ", longueurCamion=" + longueurCamion + ", hauteurCamion="
-				+ hauteurCamion + ", typeCamion=" + typeCamion + "]";
+	public final void setHauteur(int hauteur) {
+		this.hauteur = hauteur;
 	}
 
 }
