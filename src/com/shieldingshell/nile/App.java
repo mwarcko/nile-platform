@@ -22,6 +22,8 @@ public class App {
 			e.printStackTrace();
 		}
 		fct.readCommande(file);
+		
+		System.out.println(15%6);
 	}
 
 }
