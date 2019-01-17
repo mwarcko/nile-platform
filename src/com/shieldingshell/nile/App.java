@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import com.shieldingshell.nile.functions.Functions;
+import com.shieldingshell.nile.pojos.Camion;
 import com.shieldingshell.nile.pojos.Commande;
 import com.shieldingshell.nile.utils.FinalsUtils;
 
@@ -15,15 +16,17 @@ public class App {
 		
 		File file = new File(FinalsUtils.TEST_FOLDER + fct.createDate());
 
-		Commande commandeTest = fct.applyIdToCartonInCommande(fct.createCommande(10));
+		Commande commandeTest = new Commande(fct.orderCommande(fct.applyIdToCartonInCommande(fct.createCommande(10))));
 		try {
 			fct.writeCommande(file, commandeTest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		fct.readCommande(file);
 		
-		System.out.println(15%6);
+		System.out.println(fct.loadTruck(fct.readCommande(file), 48, 4, Camion.TYPE_XL));
+		
+		
+//		System.out.println(16%12);
 	}
 
 }
