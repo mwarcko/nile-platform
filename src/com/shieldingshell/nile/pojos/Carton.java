@@ -1,6 +1,8 @@
 package com.shieldingshell.nile.pojos;
 
-public enum Carton {
+import java.io.Serializable;
+
+public enum Carton implements Serializable{
 
 	TYPE_S(60L, 150L), TYPE_M(60L, 300L), TYPE_L(120L, 300L), TYPE_XL(120L, 600L);
 
