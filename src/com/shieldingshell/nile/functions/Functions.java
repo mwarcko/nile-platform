@@ -7,12 +7,33 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Random;
 
+import com.shieldingshell.nile.pojos.Carton;
 import com.shieldingshell.nile.pojos.Commande;
 
-
 public class Functions {
-	
+
+	private static Random numberGenerator = new Random();
+
+	public <T> T randomElement(T[] elements) {
+		return elements[numberGenerator.nextInt(elements.length)];
+	}
+
+	public Commande createCommande(int nbreCarton) {
+		Carton[] allCommande = Carton.values();
+		List<Carton> cartons = new LinkedList<>();
+		int i = 0;
+		while (i != nbreCarton) {
+			Carton randomCarton = randomElement(allCommande);
+			cartons.add(randomCarton);
+		}
+		Commande newCommande = new Commande(cartons);
+		return newCommande;
+	}
+
 	public void writeCommande(File file, Commande commande) throws IOException {
 		try (FileOutputStream fop = new FileOutputStream(file); ObjectOutputStream oop = new ObjectOutputStream(fop)) {
 			if (!file.exists()) {
@@ -43,7 +64,4 @@ public class Functions {
 		return file.list();
 	}
 
-	
-	
-	
 }

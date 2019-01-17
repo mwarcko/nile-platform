@@ -1,16 +1,13 @@
 package com.shieldingshell.nile.pojos;
 
 public enum Camion {
-	
-	TYPE_S(600L,120L,1),
-	TYPE_M(900L,120L,2),
-	TYPE_L(1200L,240L,3),
-	TYPE_XL(1500L,240L,4);
-	
+
+	TYPE_S(600L, 120L, 1), TYPE_M(900L, 120L, 2), TYPE_L(1200L, 240L, 3), TYPE_XL(1500L, 240L, 4);
+
 	private Long longueur;
 	private Long largeur;
 	private int hauteur;
-	
+
 	private Camion(Long longueur, Long largeur, int hauteur) {
 		this.longueur = longueur;
 		this.largeur = largeur;
