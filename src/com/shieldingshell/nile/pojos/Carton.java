@@ -1,34 +1,31 @@
 package com.shieldingshell.nile.pojos;
 
-public class Carton {
+public enum Carton {
+
+	TYPE_S(60L, 150L), TYPE_M(60L, 300L), TYPE_L(120L, 300L), TYPE_XL(120L, 600L);
+
 	private Long largeurCarton;
 	private Long longueurCarton;
 
-	public Carton(Long largeurCarton, Long longueurCarton) {
-		super();
+	private Carton(Long largeurCarton, Long longueurCarton) {
 		this.largeurCarton = largeurCarton;
 		this.longueurCarton = longueurCarton;
 	}
 
-	public final Long getLargeurCarton() {
+	public Long getLargeurCarton() {
 		return largeurCarton;
 	}
 
-	public final void setLargeurCarton(Long largeurCarton) {
+	public void setLargeurCarton(Long largeurCarton) {
 		this.largeurCarton = largeurCarton;
 	}
 
-	public final Long getLongueurCarton() {
+	public Long getLongueurCarton() {
 		return longueurCarton;
 	}
 
-	public final void setLongueurCarton(Long longueurCarton) {
+	public void setLongueurCarton(Long longueurCarton) {
 		this.longueurCarton = longueurCarton;
-	}
-
-	@Override
-	public String toString() {
-		return "Carton [largeurCarton=" + largeurCarton + ", longueurCarton=" + longueurCarton + "]";
 	}
 
 }
