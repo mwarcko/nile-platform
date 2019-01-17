@@ -23,7 +23,7 @@ public class App {
 			e.printStackTrace();
 		}
 		
-		System.out.println(fct.loadTruck(fct.readCommande(file), 48, 4, Camion.TYPE_XL));
+		fct.loadTruck(fct.readCommande(file), 48, 4, Camion.TYPE_XL);
 		
 		
 //		System.out.println(16%12);

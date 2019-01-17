@@ -80,7 +80,7 @@ public class Functions {
 		return commande;
 	}
 	
-	public CamionID loadTruck(Commande commande, int spaceTruck, int storyTruck, Camion camion) {
+	public void loadTruck(Commande commande, int spaceTruck, int storyTruck, Camion camion) {
 		int emptySpaceTruck = spaceTruck;
 		int emptyStory = storyTruck;
 		List<CartonID> cartons = commande.getCartons();
@@ -92,37 +92,49 @@ public class Functions {
 						.collect(Collectors.toList());
 				//we load until there is no space left
 				while(emptySpaceTruck <= 8 || emptyStory == 0) {
+					cartonXL.get(0).setStory(emptyStory-storyTruck+1);
 					cartonsID.add(cartonXL.get(0));
+					System.out.println("adding carton ID " + cartonXL.get(0).getIdCarton() + " size : " + cartonXL.get(0).getCarton().getPlace());
 					cartonXL.remove(0);
+					emptySpaceTruck -= 8;
 				}
 				
 				// we gather L
 				List<CartonID> cartonL = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 4)
 						.collect(Collectors.toList());
 				while(emptySpaceTruck <= 4 || emptyStory == 0) {
+					cartonL.get(0).setStory(emptyStory-storyTruck+1);
 					cartonsID.add(cartonL.get(0));
+					System.out.println("adding carton ID " + cartonL.get(0).getIdCarton() + " size : " + cartonL.get(0).getCarton().getPlace());
 					cartonL.remove(0);
+					emptySpaceTruck -= 4;
 				}
 				
 				// we gather M
 				List<CartonID> cartonM = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 2)
 						.collect(Collectors.toList());
 				while(emptySpaceTruck <= 2 || emptyStory == 0) {
+					cartonM.get(0).setStory(emptyStory-storyTruck+1);
 					cartonsID.add(cartonM.get(0));
+					System.out.println("adding carton ID " + cartonM.get(0).getIdCarton() + " size : " + cartonM.get(0).getCarton().getPlace());
 					cartonM.remove(0);
+					emptySpaceTruck -= 2;
 				}
 				
 				// we gather S
 				List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
 						.collect(Collectors.toList());
 				while(emptySpaceTruck <= 1 || emptyStory == 0) {
+					cartonS.get(0).setStory(emptyStory-storyTruck+1);
 					cartonsID.add(cartonS.get(0));
+					System.out.println("adding carton ID " + cartonS.get(0).getIdCarton() + " size : " + cartonS.get(0).getCarton().getPlace());
 					cartonS.remove(0);
+					emptySpaceTruck -= 1;
 				}
 			}
 		}
 		CamionID camionID = new CamionID(camion, cartonsID);
-		return camionID;
+		System.out.println(camionID);
 	}
 
 	public List<CartonID> orderCommande(List<CartonID> cartons) {
