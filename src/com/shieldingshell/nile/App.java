@@ -74,7 +74,7 @@ public class App {
 							e.printStackTrace();
 						}
 					} catch (NumberFormatException e) {
-						System.out.println("This parameter must be an integer");
+						System.out.println("This parameter must be an integer, type \"help\" if you want to know further");
 					}
 				}
 				break;
@@ -190,6 +190,14 @@ public class App {
 				}
 				break;
 			case "exit":
+				fileAvailable.delete();
+				try {
+					fct.writeCamion(new File(FinalsUtils.CAMION_REP + "available"), camionsDisp);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					System.out.println("LOL");
+					e.printStackTrace();
+				}
 				exit = true;
 				System.out.println("bye bye");
 				break;

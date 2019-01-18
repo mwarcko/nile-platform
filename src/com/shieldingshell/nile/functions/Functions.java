@@ -102,7 +102,7 @@ public class Functions {
 	}
 
 	public List<CamionID> readCamion(File file) {
-		List<CamionID> camions = new LinkedList<>();
+		LinkedList<CamionID> camions = new LinkedList<>();
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			while ((camions = (LinkedList<CamionID>) ois.readObject()) != null) {
 				System.out.println("Loading truck...");
