@@ -6,6 +6,7 @@ The app main is the class App.java
 
 The biggest "camion" is like this :
 
+:-: |:-: | :-: | :-:
 1 | 2 | 17 | 18
 3 | 4 | 19 | 20
 5 | 6 | 21 | 22
