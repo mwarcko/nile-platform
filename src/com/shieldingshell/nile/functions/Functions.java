@@ -5,8 +5,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -50,7 +52,7 @@ public class Functions {
 			}
 		}
 		int[] camionTab = { xl, m, s };
-		if(print) {
+		if (print) {
 			System.out.println("You have " + camions.size() + " trucks available");
 			System.out.println(xl + " truck(s) XL " + m + " truck(s) M and " + s + " truck(s) S");
 		}
@@ -131,19 +133,6 @@ public class Functions {
 		return commande;
 	}
 
-	public Commande mergeAllCommand() {
-		File fileCommande = new File(FinalsUtils.COMMANDE_REP);
-		String[] commandeList = fileCommande.list();
-
-		List<CartonID> cartons = new LinkedList<>();
-		for (String commandeFile : commandeList) {
-			File file = new File(FinalsUtils.COMMANDE_REP + commandeFile);
-			cartons.addAll(readCommande(file).getCartons());
-		}
-		Commande finalCommande = new Commande(cartons, "mergedCommande");
-		return finalCommande;
-	}
-
 	public Commande loadTruck(List<Commande> commandes, int spaceTruck, CamionID camionID) {
 		Commande commandeRestante = new Commande();
 		for (Commande commande : commandes) {
@@ -219,11 +208,17 @@ public class Functions {
 				File camionAvailable = new File(FinalsUtils.CAMION_REP + "available");
 				System.out.println("The camion " + camionID.getCamion()
 						+ " is fully loaded, there is no space left and " + cartons.size() + " cartons left");
-				List<CamionID> camionsDisp = readCamion(new File(FinalsUtils.CAMION_REP + "available"));
+				List<CamionID> camionsDisp = readCamion(camionAvailable);
 				camionsDisp.remove(camionID);
 				camionAvailable.delete();
 				try {
-					writeCamion(new File(FinalsUtils.CAMION_REP + "available"), camionsDisp);
+					camionAvailable.createNewFile();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+				try {
+					writeCamion(camionAvailable, camionsDisp);
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -234,6 +229,19 @@ public class Functions {
 			if (commandeRestante.getCartons().size() == 0) {
 				System.out.println("The order " + commandeRestante.getCommandeName() + " has been entirely shipped");
 				File fileToDelete = new File(FinalsUtils.COMMANDE_REP + commandeRestante.getCommandeName());
+				File fileWithCommandeShipped = new File(FinalsUtils.COMMANDE_SHIPPED + commandeRestante.getCommandeName());
+				try {
+					fileWithCommandeShipped.createNewFile();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				try {
+					copyFile(fileToDelete, fileWithCommandeShipped);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				fileToDelete.delete();
 			} else {
 				cartonsLeftinCommande(commandeRestante);
@@ -242,9 +250,26 @@ public class Functions {
 		return commandeRestante;
 	}
 
+	public void copyFile(File source, File dest) throws IOException {
+		InputStream is = null;
+		OutputStream os = null;
+		try {
+			is = new FileInputStream(source);
+			os = new FileOutputStream(dest);
+			byte[] buffer = new byte[1024];
+			int length;
+			while ((length = is.read(buffer)) > 0) {
+				os.write(buffer, 0, length);
+			}
+		} finally {
+			is.close();
+			os.close();
+		}
+	}
+
 	public void cartonsLeftinCommande(Commande commande) {
-		File file = new File(FinalsUtils.COMMANDE_REP + commande.getCommandeName());
-		System.out.println("Boxes who are not in trucks are put in another \"commande\" " + commande.getCommandeName());
+		File file = new File(FinalsUtils.COMMANDE_REP + commande.getCommandeName() + "bis");
+		System.out.println("Boxes who are not in trucks are put in another \"commande\" " + commande.getCommandeName() + "bis");
 		try {
 			writeCommande(file, commande);
 		} catch (IOException e) {
