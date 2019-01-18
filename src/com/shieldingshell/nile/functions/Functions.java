@@ -151,13 +151,13 @@ public class Functions {
 			List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
 					.collect(Collectors.toList());
 			// while there is no carton left in the commande AND there is no story left
-			while (cartons.size() != 0 && emptyStory != 0) {
+			while (!cartons.isEmpty() && emptyStory != 0) {
 				// while there is no empty space in the story AND there is no cartons in left in
 				// the commande
-				while (emptySpaceTruck != 0 && cartons.size() != 0 && emptyStory != 0) {
+				while (emptySpaceTruck != 0 && !cartons.isEmpty() && emptyStory != 0) {
 					// we load until there is no space enough for a XL carton AND there is no
 					// cartonXL left
-					while (emptySpaceTruck >= 8 && cartonXL.size() != 0) {
+					while (emptySpaceTruck >= 8 && !cartonXL.isEmpty()) {
 						cartonXL.get(0).setStory(storyTruck - emptyStory + 1);
 						cartonXL.get(0).setSpace(space);
 						space += cartonXL.get(0).getCarton().getPlace();
@@ -165,7 +165,7 @@ public class Functions {
 						cartonXL.remove(0);
 						emptySpaceTruck -= 8;
 					}
-					while (emptySpaceTruck >= 4 && cartonL.size() != 0) {
+					while (emptySpaceTruck >= 4 && !cartonL.isEmpty()) {
 						cartonL.get(0).setStory(storyTruck - emptyStory + 1);
 						cartonL.get(0).setSpace(space);
 						space += cartonL.get(0).getCarton().getPlace();
@@ -173,7 +173,7 @@ public class Functions {
 						cartonL.remove(0);
 						emptySpaceTruck -= 4;
 					}
-					while (emptySpaceTruck >= 2 && cartonM.size() != 0) {
+					while (emptySpaceTruck >= 2 && !cartonM.isEmpty()) {
 						cartonM.get(0).setStory(storyTruck - emptyStory + 1);
 						cartonM.get(0).setSpace(space);
 						space += cartonM.get(0).getCarton().getPlace();
@@ -181,7 +181,7 @@ public class Functions {
 						cartonM.remove(0);
 						emptySpaceTruck -= 2;
 					}
-					while (emptySpaceTruck >= 1 && cartonS.size() != 0) {
+					while (emptySpaceTruck >= 1 && !cartonS.isEmpty()) {
 						cartonS.get(0).setStory(storyTruck - emptyStory + 1);
 						cartonS.get(0).setSpace(space);
 						space += cartonS.get(0).getCarton().getPlace();
@@ -204,7 +204,7 @@ public class Functions {
 			}
 			camionID.setCartons(cartonsID);
 			System.out.println(camionID);
-			if (emptyStory == 0 && cartons.size() != 0) {
+			if (emptyStory == 0 && !cartons.isEmpty()) {
 				File camionAvailable = new File(FinalsUtils.CAMION_REP + "available");
 				System.out.println("The camion " + camionID.getCamion()
 						+ " is fully loaded, there is no space left and " + cartons.size() + " cartons left");
@@ -226,7 +226,7 @@ public class Functions {
 
 			}
 			commandeRestante = new Commande(cartons, commande.getCommandeName());
-			if (commandeRestante.getCartons().size() == 0) {
+			if (commandeRestante.getCartons().isEmpty()) {
 				System.out.println("The order " + commandeRestante.getCommandeName() + " has been entirely shipped");
 				File fileToDelete = new File(FinalsUtils.COMMANDE_REP + commandeRestante.getCommandeName());
 				File fileWithCommandeShipped = new File(FinalsUtils.COMMANDE_SHIPPED + commandeRestante.getCommandeName());
