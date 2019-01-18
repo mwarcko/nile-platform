@@ -1,9 +1,14 @@
 package com.shieldingshell.nile.pojos;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class CamionID {
+public class CamionID implements Serializable{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Camion camion;
 	private List<CartonID> cartons;
 
