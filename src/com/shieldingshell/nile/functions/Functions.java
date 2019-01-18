@@ -32,6 +32,26 @@ public class Functions {
 		return date.getTime();
 	}
 
+	public void listTruck(List<CamionID> camions) {
+		System.out.println("You have " + camions.size() + " trucks available");
+		int xl = 0;
+		int m = 0;
+		int s = 0;
+		for (CamionID camionID : camions) {
+			String typeCamion = camionID.getCamion().toString();
+			if(typeCamion.equals("TYPE_XL")) {
+				xl++;
+			}
+			if(typeCamion.equals("TYPE_M")) {
+				m++;
+			}
+			if(typeCamion.equals("TYPE_S")) {
+				s++;
+			}
+		}
+		System.out.println(xl + " truck(s) XL " + m + " truck(s) M and " + s + " truck(s) S");
+	}
+	
 	public List<Carton> createCommande(int nbreCarton) {
 		Carton[] allCommande = Carton.values();
 		List<Carton> cartons = new LinkedList<>();

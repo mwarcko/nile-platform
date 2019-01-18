@@ -12,6 +12,11 @@ public class CamionID {
 		this.camion = camion;
 		this.cartons = cartons;
 	}
+	
+	public CamionID(Camion camion) {
+		super();
+		this.camion = camion;
+	}
 
 	public Camion getCamion() {
 		return camion;
