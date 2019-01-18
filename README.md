@@ -31,6 +31,6 @@ Each box can take 1, 2, 4 or 8 spaces
 
 What we have to do next :
 
-*delete order when it is loaded*
+*put loaded boxes in a new file*
 
 *set truck to unavailable when loaded when you take the "all" option*

@@ -33,25 +33,27 @@ public class Functions {
 		return date.getTime();
 	}
 
-	public int[] listTruck(List<CamionID> camions) {
-		System.out.println("You have " + camions.size() + " trucks available");
+	public int[] listTruck(List<CamionID> camions, boolean print) {
 		int xl = 0;
 		int m = 0;
 		int s = 0;
 		for (CamionID camionID : camions) {
-			String typeCamion = camionID.getCamion().toString();
-			if (typeCamion.equals("TYPE_XL")) {
+			Camion typeCamion = camionID.getCamion();
+			if (typeCamion.equals(Camion.TYPE_XL)) {
 				xl++;
 			}
-			if (typeCamion.equals("TYPE_M")) {
+			if (typeCamion.equals(Camion.TYPE_M)) {
 				m++;
 			}
-			if (typeCamion.equals("TYPE_S")) {
+			if (typeCamion.equals(Camion.TYPE_S)) {
 				s++;
 			}
 		}
-		System.out.println(xl + " truck(s) XL " + m + " truck(s) M and " + s + " truck(s) S");
 		int[] camionTab = { xl, m, s };
+		if(print) {
+			System.out.println("You have " + camions.size() + " trucks available");
+			System.out.println(xl + " truck(s) XL " + m + " truck(s) M and " + s + " truck(s) S");
+		}
 		return camionTab;
 	}
 
@@ -87,7 +89,7 @@ public class Functions {
 			oop.writeObject(commande);
 		}
 	}
-	
+
 	public void writeCamion(File file, List<CamionID> camions) throws IOException {
 		try (FileOutputStream fop = new FileOutputStream(file); ObjectOutputStream oop = new ObjectOutputStream(fop)) {
 			if (!file.exists()) {
@@ -96,18 +98,16 @@ public class Functions {
 			oop.writeObject(camions);
 		}
 	}
-	
-	public List<CamionID> readCamion(File file){
+
+	public List<CamionID> readCamion(File file) {
 		List<CamionID> camions = new LinkedList<>();
-		CamionID camionID = new CamionID();
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			while ((camions = (LinkedList<CamionID>) ois.readObject()) != null) {
 				System.out.println("Loading truck...");
-				camions.add(camionID);
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			if (e instanceof EOFException) {
-				System.out.println("OK");
+
 			} else {
 				e.printStackTrace();
 			}
@@ -217,8 +217,8 @@ public class Functions {
 			System.out.println(camionID);
 			if (emptyStory == 0 && cartons.size() != 0) {
 				File camionAvailable = new File(FinalsUtils.CAMION_REP + "available");
-				System.out.println("The camion " + camionID.getCamion() + " is fully loaded, there is no space left and "
-						+ cartons.size() + " cartons left");
+				System.out.println("The camion " + camionID.getCamion()
+						+ " is fully loaded, there is no space left and " + cartons.size() + " cartons left");
 				List<CamionID> camionsDisp = readCamion(new File(FinalsUtils.CAMION_REP + "available"));
 				camionsDisp.remove(camionID);
 				camionAvailable.delete();
@@ -228,7 +228,7 @@ public class Functions {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 			}
 			commandeRestante = new Commande(cartons, commande.getCommandeName());
 			if (commandeRestante.getCartons().size() == 0) {

@@ -110,7 +110,7 @@ public class App {
 				}
 				break;
 			case "lstruck":
-				fct.listTruck(camionsDisp);
+				fct.listTruck(camionsDisp, true);
 				break;
 			case "loadorder":
 				List<Commande> commandeToLoad = new LinkedList<>();
@@ -151,7 +151,7 @@ public class App {
 					}
 				} else {
 					CamionID vehiculeChoisi = new CamionID();
-					int[] vehiculeTab = fct.listTruck(camionsDisp);
+					int[] vehiculeTab = fct.listTruck(camionsDisp, false);
 					switch (choiceLoading) {
 					case "XL":
 						if (vehiculeTab[0] != 0) {
