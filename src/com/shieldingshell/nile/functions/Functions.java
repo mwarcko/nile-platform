@@ -79,57 +79,76 @@ public class Functions {
 		}
 		return commande;
 	}
-	
+
 	public void loadTruck(Commande commande, int spaceTruck, int storyTruck, Camion camion) {
 		int emptySpaceTruck = spaceTruck;
 		int emptyStory = storyTruck;
 		List<CartonID> cartons = commande.getCartons();
-		List<CartonID> cartonsID = new LinkedList<>(); 
-		while(cartons.size()!=0 || emptyStory == 0) {
-			while(emptySpaceTruck!=0 || cartons.size() !=0) {
+		List<CartonID> cartonsID = new LinkedList<>();
+		List<CartonID> cartonXL = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 8)
+				.collect(Collectors.toList());
+		List<CartonID> cartonL = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 4)
+				.collect(Collectors.toList());
+		List<CartonID> cartonM = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 2)
+				.collect(Collectors.toList());
+		List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
+				.collect(Collectors.toList());
+		// while there is no carton left in the commande OR there is no story left
+		while (cartons.size() != 0 || emptyStory == 0) {
+			System.out.println("First while : cartons.size :" + cartons.size() + " emptyStory :" + emptyStory);
+			// while there is no empty space in the story OR there is no cartons in left in
+			// the commande
+			while (emptySpaceTruck != 0 || cartons.size() != 0) {
 				// we gather XL
-				List<CartonID> cartonXL = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 8)
-						.collect(Collectors.toList());
-				//we load until there is no space left
-				while(emptySpaceTruck <= 8 || emptyStory == 0) {
-					cartonXL.get(0).setStory(emptyStory-storyTruck+1);
+				System.out.println(
+						"second while : emptySpaceTruck :" + emptySpaceTruck + " cartons.size :" + cartons.size());
+				// we load until there is no space enough for a XL carton OR there is no
+				// cartonXL left
+				while (emptySpaceTruck > 8 || cartonXL.size() != 0) {
+					cartonXL.get(0).setStory(emptyStory - storyTruck + 1);
 					cartonsID.add(cartonXL.get(0));
-					System.out.println("adding carton ID " + cartonXL.get(0).getIdCarton() + " size : " + cartonXL.get(0).getCarton().getPlace());
+					System.out.println("adding carton ID " + cartonXL.get(0).getIdCarton() + " size of the carton : "
+							+ cartonXL.get(0).getCarton().getPlace());
+					System.out.println("cartonXL size : " + cartonXL.size());
 					cartonXL.remove(0);
 					emptySpaceTruck -= 8;
 				}
-				
-				// we gather L
-				List<CartonID> cartonL = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 4)
-						.collect(Collectors.toList());
-				while(emptySpaceTruck <= 4 || emptyStory == 0) {
-					cartonL.get(0).setStory(emptyStory-storyTruck+1);
+				while (emptySpaceTruck > 4 || cartonL.size() !=0) {
+					cartonL.get(0).setStory(emptyStory - storyTruck + 1);
 					cartonsID.add(cartonL.get(0));
-					System.out.println("adding carton ID " + cartonL.get(0).getIdCarton() + " size : " + cartonL.get(0).getCarton().getPlace());
+					System.out.println("adding carton ID " + cartonL.get(0).getIdCarton() + " size of the carton : "
+							+ cartonL.get(0).getCarton().getPlace());
+					System.out.println("carton L size : " + cartonL.size());
 					cartonL.remove(0);
 					emptySpaceTruck -= 4;
 				}
-				
-				// we gather M
-				List<CartonID> cartonM = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 2)
-						.collect(Collectors.toList());
-				while(emptySpaceTruck <= 2 || emptyStory == 0) {
-					cartonM.get(0).setStory(emptyStory-storyTruck+1);
+
+				while (emptySpaceTruck > 2 || cartonM.size() !=0) {
+					cartonM.get(0).setStory(emptyStory - storyTruck + 1);
 					cartonsID.add(cartonM.get(0));
-					System.out.println("adding carton ID " + cartonM.get(0).getIdCarton() + " size : " + cartonM.get(0).getCarton().getPlace());
+					System.out.println("adding carton ID " + cartonM.get(0).getIdCarton() + " size of the carton : "
+							+ cartonM.get(0).getCarton().getPlace());
 					cartonM.remove(0);
 					emptySpaceTruck -= 2;
 				}
-				
-				// we gather S
-				List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
-						.collect(Collectors.toList());
-				while(emptySpaceTruck <= 1 || emptyStory == 0) {
-					cartonS.get(0).setStory(emptyStory-storyTruck+1);
+
+				while (emptySpaceTruck > 1 || cartonS.size() !=0) {
+					cartonS.get(0).setStory(emptyStory - storyTruck + 1);
 					cartonsID.add(cartonS.get(0));
-					System.out.println("adding carton ID " + cartonS.get(0).getIdCarton() + " size : " + cartonS.get(0).getCarton().getPlace());
+					System.out.println("adding carton ID " + cartonS.get(0).getIdCarton() + " size of the carton : "
+							+ cartonS.get(0).getCarton().getPlace());
 					cartonS.remove(0);
 					emptySpaceTruck -= 1;
+				}
+				cartons.removeAll(cartons);
+				cartons.addAll(cartonXL);
+				cartons.addAll(cartonL);
+				cartons.addAll(cartonM);
+				cartons.addAll(cartonS);
+				System.out.println("at the end of all the while block there is " + cartons.size() + " cartons left");
+				//if there is no space left on the story we take another one
+				if(emptySpaceTruck == 0) {
+					emptyStory -=1;
 				}
 			}
 		}
