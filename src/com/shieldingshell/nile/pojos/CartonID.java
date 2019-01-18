@@ -11,6 +11,15 @@ public class CartonID implements Serializable {
 	private Carton carton;
 	private Long idCarton;
 	private int story;
+	private int space;
+
+	public CartonID(Carton carton, Long idCarton, int story, int space) {
+		super();
+		this.carton = carton;
+		this.idCarton = idCarton;
+		this.story = story;
+		this.space = space;
+	}
 
 	public CartonID(Carton carton, Long idCarton) {
 		super();
@@ -23,6 +32,14 @@ public class CartonID implements Serializable {
 		this.carton = carton;
 		this.idCarton = idCarton;
 		this.story = story;
+	}
+
+	public int getSpace() {
+		return space;
+	}
+
+	public void setSpace(int space) {
+		this.space = space;
 	}
 
 	public int getStory() {
@@ -51,7 +68,7 @@ public class CartonID implements Serializable {
 
 	@Override
 	public String toString() {
-		return "CartonID [carton=" + carton + ", idCarton=" + idCarton + "]";
+		return "CartonID [carton=" + carton + ", idCarton=" + idCarton + ", story=" + story + ", space=" + space + "]";
 	}
 
 }

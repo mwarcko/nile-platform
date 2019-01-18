@@ -16,14 +16,14 @@ public class App {
 		
 		File file = new File(FinalsUtils.TEST_FOLDER + fct.createDate());
 
-		Commande commandeTest = new Commande(fct.orderCommande(fct.applyIdToCartonInCommande(fct.createCommande(10))));
+		Commande commandeTest = new Commande(fct.orderCommande(fct.applyIdToCartonInCommande(fct.createCommande(50))));
 		try {
 			fct.writeCommande(file, commandeTest);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		fct.loadTruck(fct.readCommande(file), 48, 4, Camion.TYPE_XL);
+		fct.loadTruck(fct.readCommande(file), 48, Camion.TYPE_XL);
 		
 		
 //		System.out.println(16%12);
