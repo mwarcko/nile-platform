@@ -21,17 +21,20 @@ public class App {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println(
-					"What do you want to do (commands : \"help \", \"createorder\", \"truckadd\", \"lstruck\", \"mkdir\", \"touch\", \"rm\", \"rd\", \"exit\") ?");
+					"What do you want to do (commands : \"help \", \"createorder\", \"truckadd\", \"lstruck\", \"loadorder\", \"exit\") ?");
 			String input = sc.nextLine();
 			String commande = "";
 			String param = "";
 			if (input.equals("exit")) {
 				commande = "exit";
 				param = "";
+			} else if (input.equals("loadorder")) {
+				commande = "loadorder";
+				param = "";
 			} else if (input.equals("help")) {
 				commande = "help";
 				param = "";
-			} else if (input.equals("lstruck")){
+			} else if (input.equals("lstruck")) {
 				commande = "lstruck";
 				param = "";
 			} else {
@@ -57,7 +60,7 @@ public class App {
 				break;
 			case "createorder":
 				Long commandeName = fct.createDate();
-				File file = new File(FinalsUtils.TEST_FOLDER + commandeName);
+				File file = new File(FinalsUtils.COMMANDE_REP + commandeName);
 				try {
 					int nbrCarton = Integer.parseInt(param);
 					Commande commandeTest = new Commande(
@@ -95,6 +98,62 @@ public class App {
 				break;
 			case "lstruck":
 				fct.listTruck(camionsDisp);
+				break;
+			case "loadorder":
+				Commande commandeToLoad = new Commande();
+				
+				System.out.println("What order do you want to load ? (Number of the order or \"all\")");
+				File fileCommande = new File(FinalsUtils.COMMANDE_REP);
+				String[] commandeList = fileCommande.list();
+				for (String string : commandeList) {
+					System.out.println(string);
+				}
+				String choiceOrder = sc.nextLine();
+				if(choiceOrder.equals("all")) {
+					commandeToLoad = fct.mergeAllCommand();
+				}else {
+					File fileUnique = new File(FinalsUtils.COMMANDE_REP + choiceOrder);
+					commandeToLoad = fct.readCommande(fileUnique);
+				}
+				System.out.println("What truck do you want to load ? (XL,M,S,all)");
+				String choiceLoading = sc.nextLine();
+				if (choiceLoading.equals("all")) {
+					for (CamionID camionID : camionsDisp) {
+						while(commandeToLoad.getCartons().size()!=0) {
+							commandeToLoad = fct.loadTruck(commandeToLoad, camionID.getCamion().getPlace(), camionID.getCamion());							
+						}
+					}
+				} else {
+					CamionID vehiculeChoisi = new CamionID();
+					int[] vehiculeTab = fct.listTruck(camionsDisp);
+					switch (choiceLoading) {
+					case "XL":
+						if(vehiculeTab[0]-1 !=0) {
+							vehiculeChoisi = new CamionID(Camion.TYPE_XL);
+						}else {
+							System.out.println("You have no \"XL\" truck available");
+						}
+						break;
+					case "M":
+						if(vehiculeTab[1]-1 !=0) {
+							vehiculeChoisi = new CamionID(Camion.TYPE_M);
+						}else {
+							System.out.println("You have no \"M\" truck available");
+						}
+						break;
+					case "S":
+						if(vehiculeTab[2]-1 !=0) {
+							vehiculeChoisi = new CamionID(Camion.TYPE_S);
+						}else {
+							System.out.println("You have no \"S\" truck available");
+						}
+						break;
+					default:
+						System.out.println("\"" + choiceLoading + "\" is an unknown size");
+						break;
+					}
+					fct.loadTruck(commandeToLoad, vehiculeChoisi.getCamion().getPlace(), vehiculeChoisi.getCamion());
+				}
 				break;
 			case "exit":
 				exit = true;

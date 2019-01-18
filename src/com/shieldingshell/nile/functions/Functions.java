@@ -18,6 +18,7 @@ import com.shieldingshell.nile.pojos.CamionID;
 import com.shieldingshell.nile.pojos.Carton;
 import com.shieldingshell.nile.pojos.CartonID;
 import com.shieldingshell.nile.pojos.Commande;
+import com.shieldingshell.nile.utils.FinalsUtils;
 
 public class Functions {
 
@@ -32,26 +33,28 @@ public class Functions {
 		return date.getTime();
 	}
 
-	public void listTruck(List<CamionID> camions) {
+	public int[] listTruck(List<CamionID> camions) {
 		System.out.println("You have " + camions.size() + " trucks available");
 		int xl = 0;
 		int m = 0;
 		int s = 0;
 		for (CamionID camionID : camions) {
 			String typeCamion = camionID.getCamion().toString();
-			if(typeCamion.equals("TYPE_XL")) {
+			if (typeCamion.equals("TYPE_XL")) {
 				xl++;
 			}
-			if(typeCamion.equals("TYPE_M")) {
+			if (typeCamion.equals("TYPE_M")) {
 				m++;
 			}
-			if(typeCamion.equals("TYPE_S")) {
+			if (typeCamion.equals("TYPE_S")) {
 				s++;
 			}
 		}
 		System.out.println(xl + " truck(s) XL " + m + " truck(s) M and " + s + " truck(s) S");
+		int[] camionTab = {xl,m,s};
+		return camionTab;
 	}
-	
+
 	public List<Carton> createCommande(int nbreCarton) {
 		Carton[] allCommande = Carton.values();
 		List<Carton> cartons = new LinkedList<>();
@@ -100,7 +103,20 @@ public class Functions {
 		return commande;
 	}
 
-	public void loadTruck(Commande commande, int spaceTruck, Camion camion) {
+	public Commande mergeAllCommand() {
+		File fileCommande = new File(FinalsUtils.COMMANDE_REP);
+		String[] commandeList = fileCommande.list();
+
+		List<CartonID> cartons = new LinkedList<>();
+		for (String commandeFile : commandeList) {
+			File file = new File(FinalsUtils.COMMANDE_REP + commandeFile);
+			cartons.addAll(readCommande(file).getCartons());
+		}
+		Commande finalCommande = new Commande(cartons);
+		return finalCommande;
+	}
+
+	public Commande loadTruck(Commande commande, int spaceTruck, Camion camion) {
 		int storyTruck = camion.getHauteur();
 		int space = 1;
 		int emptySpaceTruck = spaceTruck;
@@ -115,85 +131,66 @@ public class Functions {
 				.collect(Collectors.toList());
 		List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
 				.collect(Collectors.toList());
-		// while there is no carton left in the commande OR there is no story left
+		// while there is no carton left in the commande AND there is no story left
 		while (cartons.size() != 0 && emptyStory != 0) {
-			System.out.println("First while : cartons.size :" + cartons.size() + " emptyStory :" + emptyStory);
-			// while there is no empty space in the story OR there is no cartons in left in
+			// while there is no empty space in the story AND there is no cartons in left in
 			// the commande
 			while (emptySpaceTruck != 0 && cartons.size() != 0 && emptyStory != 0) {
-				// we gather XL
-				System.out.println(
-						"second while : emptySpaceTruck :" + emptySpaceTruck + " cartons.size :" + cartons.size());
-				// we load until there is no space enough for a XL carton OR there is no
+				// we load until there is no space enough for a XL carton AND there is no
 				// cartonXL left
 				while (emptySpaceTruck >= 8 && cartonXL.size() != 0) {
-					cartonXL.get(0).setStory(storyTruck - emptyStory  + 1);
+					cartonXL.get(0).setStory(storyTruck - emptyStory + 1);
 					cartonXL.get(0).setSpace(space);
 					space += cartonXL.get(0).getCarton().getPlace();
 					cartonsID.add(cartonXL.get(0));
-					System.out.println("adding carton ID " + cartonXL.get(0).getIdCarton() + " size of the carton : "
-							+ cartonXL.get(0).getCarton());
 					cartonXL.remove(0);
-					System.out.println("cartonXL size : " + cartonXL.size());
 					emptySpaceTruck -= 8;
-					System.out.println("empty space left : " + emptySpaceTruck);
 				}
-				while (emptySpaceTruck >= 4 && cartonL.size() !=0) {
-					cartonL.get(0).setStory(storyTruck - emptyStory  + 1);
+				while (emptySpaceTruck >= 4 && cartonL.size() != 0) {
+					cartonL.get(0).setStory(storyTruck - emptyStory + 1);
 					cartonL.get(0).setSpace(space);
 					space += cartonL.get(0).getCarton().getPlace();
 					cartonsID.add(cartonL.get(0));
-					System.out.println("adding carton ID " + cartonL.get(0).getIdCarton() + " size of the carton : "
-							+ cartonL.get(0).getCarton());
 					cartonL.remove(0);
-					System.out.println("carton L size : " + cartonL.size());
 					emptySpaceTruck -= 4;
-					System.out.println("empty space left : " + emptySpaceTruck);
 				}
-
-				while (emptySpaceTruck >= 2 && cartonM.size() !=0) {
-					cartonM.get(0).setStory(storyTruck - emptyStory  + 1);
+				while (emptySpaceTruck >= 2 && cartonM.size() != 0) {
+					cartonM.get(0).setStory(storyTruck - emptyStory + 1);
 					cartonM.get(0).setSpace(space);
 					space += cartonM.get(0).getCarton().getPlace();
 					cartonsID.add(cartonM.get(0));
-					System.out.println("adding carton ID " + cartonM.get(0).getIdCarton() + " size of the carton : "
-							+ cartonM.get(0).getCarton());
 					cartonM.remove(0);
-					System.out.println("carton M size : " + cartonM.size());
 					emptySpaceTruck -= 2;
-					System.out.println("empty space left : " + emptySpaceTruck);
 				}
-
-				while (emptySpaceTruck >= 1 && cartonS.size() !=0) {
-					cartonS.get(0).setStory(storyTruck - emptyStory  + 1);
+				while (emptySpaceTruck >= 1 && cartonS.size() != 0) {
+					cartonS.get(0).setStory(storyTruck - emptyStory + 1);
 					cartonS.get(0).setSpace(space);
 					space += cartonS.get(0).getCarton().getPlace();
 					cartonsID.add(cartonS.get(0));
-					System.out.println("adding carton ID " + cartonS.get(0).getIdCarton() + " size of the carton : "
-							+ cartonS.get(0).getCarton());
 					cartonS.remove(0);
-					System.out.println("carton S size : " + cartonS.size());
 					emptySpaceTruck -= 1;
-					System.out.println("empty space left : " + emptySpaceTruck);
 				}
 				cartons.removeAll(cartons);
 				cartons.addAll(cartonXL);
 				cartons.addAll(cartonL);
 				cartons.addAll(cartonM);
 				cartons.addAll(cartonS);
-				emptyStory -=1;
-				System.out.println("at the end of all the while block there is " + cartons.size() + " cartons left, " + emptySpaceTruck + " empty space in the " + (storyTruck-emptyStory) + " story, for " + (emptyStory) + " totally empty story left");
-				//we take a new story
+				emptyStory -= 1;
+				// we take a new story
 				emptySpaceTruck = spaceTruck;
 				space = 1;
 			}
-			System.out.println("Camion loaded with " + cartonsID.size() + " cartons loaded in " + (storyTruck-emptyStory) + " story"  );
+			System.out.println("Camion loaded with " + cartonsID.size() + " cartons loaded in "
+					+ (storyTruck - emptyStory) + " story");
 		}
 		CamionID camionID = new CamionID(camion, cartonsID);
 		System.out.println(camionID);
-		if(emptyStory == 0 && cartons.size()!=0) {
-			System.out.println("The camion " + camion + " is fully loaded, there is no space left and " + cartons.size() + " cartons left");
+		if (emptyStory == 0 && cartons.size() != 0) {
+			System.out.println("The camion " + camion + " is fully loaded, there is no space left and " + cartons.size()
+					+ " cartons left");
 		}
+		Commande commandeRestante = new Commande(cartons);
+		return commandeRestante;
 	}
 
 	public List<CartonID> orderCommande(List<CartonID> cartons) {
@@ -209,11 +206,9 @@ public class Functions {
 		// we gather S
 		List<CartonID> cartonS = cartons.stream().filter(cartonID -> cartonID.getCarton().getPlace() == 1)
 				.collect(Collectors.toList());
-
 		cartonXL.addAll(cartonL);
 		cartonXL.addAll(cartonM);
 		cartonXL.addAll(cartonS);
-
 		return cartonXL;
 	}
 
