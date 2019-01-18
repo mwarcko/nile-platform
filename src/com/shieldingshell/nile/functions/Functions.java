@@ -28,7 +28,7 @@ public class Functions {
 		return elements[numberGenerator.nextInt(elements.length)];
 	}
 
-	public long createDate() {
+	public Long createDate() {
 		Date date = new Date();
 		return date.getTime();
 	}
@@ -91,11 +91,11 @@ public class Functions {
 		Commande commande = new Commande();
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			while ((commande = (Commande) ois.readObject()) != null) {
-				System.out.println(commande.getCartons());
+				System.out.println("Loading order...");
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			if (e instanceof EOFException) {
-				System.out.println("End of file");
+				System.out.println("OK");
 			} else {
 				e.printStackTrace();
 			}
@@ -191,6 +191,16 @@ public class Functions {
 		}
 		Commande commandeRestante = new Commande(cartons);
 		return commandeRestante;
+	}
+	
+	public List<CamionID> removeTruck(List<CamionID> camions, Camion camion){
+		List<CamionID> camionsType = camions.stream().filter(camionsID -> camionsID.getCamion().equals(camion))
+				.collect(Collectors.toList());
+		camionsType.remove(0);
+		camions = camions.stream().filter(camionsID -> !camionsID.getCamion().equals(camion))
+				.collect(Collectors.toList());
+		camions.addAll(camionsType);
+		return camions;
 	}
 
 	public List<CartonID> orderCommande(List<CartonID> cartons) {

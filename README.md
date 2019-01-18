@@ -1,6 +1,7 @@
 # nile-platform
 S01FINAL - shipping manager
 
+Don't forget to edit the variables for the folders in FinalsUtils !
 
 The app main is the class App.java
 
@@ -23,3 +24,9 @@ The biggest "camion" is like this :
 Each "camion" is cut into 8 (S), 32 (M) or 48(XL) "spaces"
 
 Each "carton" can take 1, 2, 4 or 8 "spaces"
+
+What we have to do next :
+
+*delete order when it is loaded*
+
+*set truck to unavailable when loaded when you take the "all" option*

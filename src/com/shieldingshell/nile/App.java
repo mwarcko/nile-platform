@@ -13,7 +13,6 @@ import com.shieldingshell.nile.pojos.Commande;
 import com.shieldingshell.nile.utils.FinalsUtils;
 
 public class App {
-
 	public static void main(String[] args) throws InterruptedException {
 		Functions fct = new Functions();
 		List<CamionID> camionsDisp = new LinkedList<>();
@@ -49,12 +48,8 @@ public class App {
 				System.out.println("createorder X where X is the number of boxes you want to create");
 				System.out.println(
 						"truckadd X where X is the type of truck (XL, M, S) you want to add. If you want to add two XL truck and one M truck, type \"truckadd XL XL M\"");
-				System.out.println("lstruck");
-				System.out.println("cp file1 file2 to copy file1 to file2");
-				System.out.println("mkdir directory to create a directory");
-				System.out.println("touch file to create a file");
-				System.out.println("rm file to remove a file");
-				System.out.println("rd directory to remove a directory");
+				System.out.println("lstruck list the truck you have");
+				System.out.println("loadorder to load your orders");
 				System.out.println("exit to quit");
 				System.out.println("==============HELP=============");
 				break;
@@ -128,22 +123,28 @@ public class App {
 					int[] vehiculeTab = fct.listTruck(camionsDisp);
 					switch (choiceLoading) {
 					case "XL":
-						if(vehiculeTab[0]-1 !=0) {
+						if(vehiculeTab[0]!=0) {
 							vehiculeChoisi = new CamionID(Camion.TYPE_XL);
+							fct.loadTruck(commandeToLoad, vehiculeChoisi.getCamion().getPlace(), vehiculeChoisi.getCamion());
+							camionsDisp = fct.removeTruck(camionsDisp, Camion.TYPE_XL);
 						}else {
 							System.out.println("You have no \"XL\" truck available");
 						}
 						break;
 					case "M":
-						if(vehiculeTab[1]-1 !=0) {
+						if(vehiculeTab[1]!=0) {
 							vehiculeChoisi = new CamionID(Camion.TYPE_M);
+							fct.loadTruck(commandeToLoad, vehiculeChoisi.getCamion().getPlace(), vehiculeChoisi.getCamion());
+							camionsDisp = fct.removeTruck(camionsDisp, Camion.TYPE_M);
 						}else {
 							System.out.println("You have no \"M\" truck available");
 						}
 						break;
 					case "S":
-						if(vehiculeTab[2]-1 !=0) {
+						if(vehiculeTab[2]!=0) {
 							vehiculeChoisi = new CamionID(Camion.TYPE_S);
+							fct.loadTruck(commandeToLoad, vehiculeChoisi.getCamion().getPlace(), vehiculeChoisi.getCamion());
+							camionsDisp = fct.removeTruck(camionsDisp, Camion.TYPE_S);
 						}else {
 							System.out.println("You have no \"S\" truck available");
 						}
@@ -152,7 +153,6 @@ public class App {
 						System.out.println("\"" + choiceLoading + "\" is an unknown size");
 						break;
 					}
-					fct.loadTruck(commandeToLoad, vehiculeChoisi.getCamion().getPlace(), vehiculeChoisi.getCamion());
 				}
 				break;
 			case "exit":
