@@ -82,6 +82,7 @@ public class Functions {
 
 	public void loadTruck(Commande commande, int spaceTruck, Camion camion) {
 		int storyTruck = camion.getHauteur();
+		int space = 1;
 		int emptySpaceTruck = spaceTruck;
 		int emptyStory = storyTruck;
 		List<CartonID> cartons = commande.getCartons();
@@ -107,6 +108,8 @@ public class Functions {
 				// cartonXL left
 				while (emptySpaceTruck >= 8 && cartonXL.size() != 0) {
 					cartonXL.get(0).setStory(storyTruck - emptyStory  + 1);
+					cartonXL.get(0).setSpace(space);
+					space += cartonXL.get(0).getCarton().getPlace();
 					cartonsID.add(cartonXL.get(0));
 					System.out.println("adding carton ID " + cartonXL.get(0).getIdCarton() + " size of the carton : "
 							+ cartonXL.get(0).getCarton());
@@ -117,6 +120,8 @@ public class Functions {
 				}
 				while (emptySpaceTruck >= 4 && cartonL.size() !=0) {
 					cartonL.get(0).setStory(storyTruck - emptyStory  + 1);
+					cartonL.get(0).setSpace(space);
+					space += cartonL.get(0).getCarton().getPlace();
 					cartonsID.add(cartonL.get(0));
 					System.out.println("adding carton ID " + cartonL.get(0).getIdCarton() + " size of the carton : "
 							+ cartonL.get(0).getCarton());
@@ -128,6 +133,8 @@ public class Functions {
 
 				while (emptySpaceTruck >= 2 && cartonM.size() !=0) {
 					cartonM.get(0).setStory(storyTruck - emptyStory  + 1);
+					cartonM.get(0).setSpace(space);
+					space += cartonM.get(0).getCarton().getPlace();
 					cartonsID.add(cartonM.get(0));
 					System.out.println("adding carton ID " + cartonM.get(0).getIdCarton() + " size of the carton : "
 							+ cartonM.get(0).getCarton());
@@ -139,6 +146,8 @@ public class Functions {
 
 				while (emptySpaceTruck >= 1 && cartonS.size() !=0) {
 					cartonS.get(0).setStory(storyTruck - emptyStory  + 1);
+					cartonS.get(0).setSpace(space);
+					space += cartonS.get(0).getCarton().getPlace();
 					cartonsID.add(cartonS.get(0));
 					System.out.println("adding carton ID " + cartonS.get(0).getIdCarton() + " size of the carton : "
 							+ cartonS.get(0).getCarton());
@@ -156,6 +165,7 @@ public class Functions {
 				System.out.println("at the end of all the while block there is " + cartons.size() + " cartons left, " + emptySpaceTruck + " empty space in the " + (storyTruck-emptyStory) + " story, for " + (emptyStory) + " totally empty story left");
 				//we take a new story
 				emptySpaceTruck = spaceTruck;
+				space = 1;
 			}
 			System.out.println("Camion loaded with " + cartonsID.size() + " cartons loaded in " + (storyTruck-emptyStory) + " story"  );
 		}
