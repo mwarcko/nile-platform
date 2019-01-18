@@ -20,6 +20,6 @@ The biggest "camion" is like this :
 37 | 38 | 45 | 46
 39 | 40 | 47 | 48
 
-Each "camion" is cut into 8 (S), 16 (M), 32(L) or 48(XL) "spaces"
+Each "camion" is cut into 8 (S), 32 (M) or 48(XL) "spaces"
 
 Each "carton" can take 1, 2, 4 or 8 "spaces"
