@@ -16,7 +16,7 @@ public class App {
 	public static void main(String[] args) throws InterruptedException {
 		Functions fct = new Functions();
 		File fileAvailable = new File(FinalsUtils.CAMION_REP + "available");
-		List<CamionID> camionsDisp = new LinkedList<>();
+		LinkedList<CamionID> camionsDisp = new LinkedList<>();
 		if(!fileAvailable.exists()) {
 			try {
 				fileAvailable.createNewFile();

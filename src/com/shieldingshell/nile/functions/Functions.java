@@ -92,20 +92,25 @@ public class Functions {
 		}
 	}
 
-	public void writeCamion(File file, List<CamionID> camions) throws IOException {
-		try (FileOutputStream fop = new FileOutputStream(file); ObjectOutputStream oop = new ObjectOutputStream(fop)) {
-			if (!file.exists()) {
-				file.createNewFile();
-			}
-			oop.writeObject(camions);
+	public void writeCamion(File file, LinkedList<CamionID> camions) throws IOException {
+//		for (CamionID camionID : camions) {
+			try (FileOutputStream fop = new FileOutputStream(file);
+					ObjectOutputStream oop = new ObjectOutputStream(fop)) {
+				if (!file.exists()) {
+					file.createNewFile();
+				}
+				oop.writeObject(camions);
+//			}
 		}
 	}
 
-	public List<CamionID> readCamion(File file) {
+	public LinkedList<CamionID> readCamion(File file) {
+//		CamionID camionID = new CamionID();
 		LinkedList<CamionID> camions = new LinkedList<>();
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			while ((camions = (LinkedList<CamionID>) ois.readObject()) != null) {
 				System.out.println("Loading truck...");
+//				camions.add(camionID);
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			if (e instanceof EOFException) {
@@ -208,7 +213,7 @@ public class Functions {
 				File camionAvailable = new File(FinalsUtils.CAMION_REP + "available");
 				System.out.println("The camion " + camionID.getCamion()
 						+ " is fully loaded, there is no space left and " + cartons.size() + " cartons left");
-				List<CamionID> camionsDisp = readCamion(camionAvailable);
+				LinkedList<CamionID> camionsDisp = readCamion(camionAvailable);
 				camionsDisp.remove(camionID);
 				camionAvailable.delete();
 				try {
@@ -229,7 +234,8 @@ public class Functions {
 			if (commandeRestante.getCartons().isEmpty()) {
 				System.out.println("The order " + commandeRestante.getCommandeName() + " has been entirely shipped");
 				File fileToDelete = new File(FinalsUtils.COMMANDE_REP + commandeRestante.getCommandeName());
-				File fileWithCommandeShipped = new File(FinalsUtils.COMMANDE_SHIPPED + commandeRestante.getCommandeName());
+				File fileWithCommandeShipped = new File(
+						FinalsUtils.COMMANDE_SHIPPED + commandeRestante.getCommandeName());
 				try {
 					fileWithCommandeShipped.createNewFile();
 				} catch (IOException e) {
@@ -269,7 +275,8 @@ public class Functions {
 
 	public void cartonsLeftinCommande(Commande commande) {
 		File file = new File(FinalsUtils.COMMANDE_REP + commande.getCommandeName() + "bis");
-		System.out.println("Boxes who are not in trucks are put in another \"commande\" " + commande.getCommandeName() + "bis");
+		System.out.println(
+				"Boxes who are not in trucks are put in another \"commande\" " + commande.getCommandeName() + "bis");
 		try {
 			writeCommande(file, commande);
 		} catch (IOException e) {
@@ -278,12 +285,12 @@ public class Functions {
 		}
 	}
 
-	public List<CamionID> removeTruck(List<CamionID> camions, Camion camion) {
-		List<CamionID> camionsType = camions.stream().filter(camionsID -> camionsID.getCamion().equals(camion))
-				.collect(Collectors.toList());
+	public LinkedList<CamionID> removeTruck(LinkedList<CamionID> camions, Camion camion) {
+		LinkedList<CamionID> camionsType = camions.stream().filter(camionsID -> camionsID.getCamion().equals(camion))
+				.collect(Collectors.toCollection(LinkedList::new));
 		camionsType.remove(0);
 		camions = camions.stream().filter(camionsID -> !camionsID.getCamion().equals(camion))
-				.collect(Collectors.toList());
+				.collect(Collectors.toCollection(LinkedList::new));
 		camions.addAll(camionsType);
 		return camions;
 	}
