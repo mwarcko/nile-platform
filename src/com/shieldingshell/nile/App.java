@@ -9,6 +9,7 @@ import java.util.Scanner;
 import com.shieldingshell.nile.functions.Functions;
 import com.shieldingshell.nile.pojos.Camion;
 import com.shieldingshell.nile.pojos.CamionID;
+import com.shieldingshell.nile.pojos.CartonID;
 import com.shieldingshell.nile.pojos.Commande;
 import com.shieldingshell.nile.utils.FinalsUtils;
 
@@ -30,7 +31,7 @@ public class App {
 		boolean exit = false;
 		while (!exit) {
 			System.out.println(
-					"What do you want to do (commands : \"help \", \"createorder\", \"truckadd\", \"lstruck\", \"loadorder\", \"exit\") ?");
+					"What do you want to do (commands : \"help \", \"createorder\", \"truckadd\", \"lstruck\", \"loadorder\", \"showorder\", \"exit\") ?");
 			String input = sc.nextLine();
 			String commande = "";
 			String param = "";
@@ -51,6 +52,7 @@ public class App {
 						"truckadd X where X is the type of truck (XL, M, S) you want to add. If you want to add two XL truck and one M truck, type \"truckadd XL XL M\"");
 				System.out.println("lstruck list the truck you have");
 				System.out.println("loadorder to load your orders");
+				System.out.println("showorder to see how a particular order was shipped");
 				System.out.println("exit to quit");
 				System.out.println("==============HELP=============");
 				break;
@@ -187,6 +189,26 @@ public class App {
 						System.out.println("\"" + choiceLoading + "\" is an unknown size");
 						break;
 					}
+				}
+				break;
+			case "showorder":
+				Commande orderToShow = new Commande();
+				System.out.println("What shipped order do you want to load ?");
+				File fileCommandeShipped = new File(FinalsUtils.COMMANDE_SHIPPED);
+				String[] commandeListShipped = fileCommandeShipped.list();
+				for (String string : commandeListShipped) {
+					System.out.println(string);
+				}
+				String choiceOrderShipped = sc.nextLine();
+				File fileUnique = new File(FinalsUtils.COMMANDE_SHIPPED + choiceOrderShipped);
+				if (fileUnique.exists()) {
+					orderToShow = fct.readCommande(fileUnique);
+				} else {
+					System.out.println("Order " + fileUnique + " doesn't exist !");
+				}
+				List<CartonID> cartonsToShow = orderToShow.getCartons();
+				for (CartonID cartonID : cartonsToShow) {
+					System.out.println(cartonID);
 				}
 				break;
 			case "exit":

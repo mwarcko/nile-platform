@@ -5,10 +5,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -93,24 +91,19 @@ public class Functions {
 	}
 
 	public void writeCamion(File file, LinkedList<CamionID> camions) throws IOException {
-//		for (CamionID camionID : camions) {
-			try (FileOutputStream fop = new FileOutputStream(file);
-					ObjectOutputStream oop = new ObjectOutputStream(fop)) {
-				if (!file.exists()) {
-					file.createNewFile();
-				}
-				oop.writeObject(camions);
-//			}
+		try (FileOutputStream fop = new FileOutputStream(file); ObjectOutputStream oop = new ObjectOutputStream(fop)) {
+			if (!file.exists()) {
+				file.createNewFile();
+			}
+			oop.writeObject(camions);
 		}
 	}
 
 	public LinkedList<CamionID> readCamion(File file) {
-//		CamionID camionID = new CamionID();
 		LinkedList<CamionID> camions = new LinkedList<>();
 		try (FileInputStream fis = new FileInputStream(file); ObjectInputStream ois = new ObjectInputStream(fis)) {
 			while ((camions = (LinkedList<CamionID>) ois.readObject()) != null) {
 				System.out.println("Loading truck...");
-//				camions.add(camionID);
 			}
 		} catch (IOException | ClassNotFoundException e) {
 			if (e instanceof EOFException) {
@@ -230,8 +223,11 @@ public class Functions {
 				}
 
 			}
+			System.out.println(cartons);
+			System.out.println();
 			commandeRestante = new Commande(cartons, commande.getCommandeName());
 			if (commandeRestante.getCartons().isEmpty()) {
+				commandeRestante.setCartons(cartonsID);
 				System.out.println("The order " + commandeRestante.getCommandeName() + " has been entirely shipped");
 				File fileToDelete = new File(FinalsUtils.COMMANDE_REP + commandeRestante.getCommandeName());
 				File fileWithCommandeShipped = new File(
@@ -243,10 +239,10 @@ public class Functions {
 					e.printStackTrace();
 				}
 				try {
-					copyFile(fileToDelete, fileWithCommandeShipped);
-				} catch (IOException e) {
+					writeCommande(fileWithCommandeShipped, commandeRestante);
+				} catch (IOException e1) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					e1.printStackTrace();
 				}
 				fileToDelete.delete();
 			} else {
@@ -254,23 +250,6 @@ public class Functions {
 			}
 		}
 		return commandeRestante;
-	}
-
-	public void copyFile(File source, File dest) throws IOException {
-		InputStream is = null;
-		OutputStream os = null;
-		try {
-			is = new FileInputStream(source);
-			os = new FileOutputStream(dest);
-			byte[] buffer = new byte[1024];
-			int length;
-			while ((length = is.read(buffer)) > 0) {
-				os.write(buffer, 0, length);
-			}
-		} finally {
-			is.close();
-			os.close();
-		}
 	}
 
 	public void cartonsLeftinCommande(Commande commande) {
