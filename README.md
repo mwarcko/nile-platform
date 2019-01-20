@@ -31,7 +31,4 @@ Each box can take 1, 2, 4 or 8 spaces
 
 What we have to do next :
 
-*persistance of the truck list is a problem for the cast when I read in the file*
-**Maybe I should try to set a simple array instead of a LinkedList**
-
-*set truck to unavailable when loaded when you take the "all" option*
+*Show the states of the commande*
