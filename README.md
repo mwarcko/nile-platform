@@ -30,5 +30,3 @@ the S truck is 2x4
 Each box can take 1, 2, 4 or 8 spaces
 
 What we have to do next :
-
-*Show the states of the commande*
