@@ -5,7 +5,7 @@ Don't forget to edit the variables for the folders in FinalsUtils !
 
 The app main is the class App.java
 
-The biggest "camion" is like this :
+The biggest truck is like this :
 
 1 | 2 | 17 | 18
 :-: |:-: | :-: | :-:
@@ -21,12 +21,12 @@ The biggest "camion" is like this :
 37 | 38 | 45 | 46
 39 | 40 | 47 | 48
 
-Each "camion" is cut into 8 (S), 32 (M) or 48(XL) "spaces"
+Each truck is cut into 8 (S), 32 (M) or 48(XL) "spaces"
 
-Each "carton" can take 1, 2, 4 or 8 "spaces"
+the XL truck is 4x12
+the M truck is 4x8
+the S truck is 2x4
+
+Each box can take 1, 2, 4 or 8 spaces
 
 What we have to do next :
-
-*delete order when it is loaded*
-
-*set truck to unavailable when loaded when you take the "all" option*
